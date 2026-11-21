@@ -250,7 +250,15 @@
   appendOptions(wikiClass, [...new Set(ships.map(ship => ship.class))].sort((a, b) => a.localeCompare(b)));
   appendOptions(wikiFaction, [...new Set(ships.map(ship => ship.faction))].sort((a, b) => a.localeCompare(b)));
   appendOptions(wikiHull, [...new Set(ships.map(ship => ship.hull))].sort((a, b) => a.localeCompare(b)));
-  appendOptions(wikiRarity, [...new Set(ships.map(ship => ship.rarity))].sort((a, b) => b.localeCompare(a)));
+  const rarityOrder = [
+    "Common (C)",
+    "Rare (R)",
+    "Elite (E)",
+    "Super Rare (SR)",
+    "Ultra Rare (UR)"
+  ];
+  const availableRarities = new Set(ships.map(ship => ship.rarity));
+  appendOptions(wikiRarity, rarityOrder.filter(rarity => availableRarities.has(rarity)));
 
   function filteredWikiShips() {
     const query = normalizeText(wikiState.query);
