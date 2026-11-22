@@ -9,6 +9,8 @@ An interactive, ECTL-style endgame PvE tier list and searchable Azur Lane ship w
 - Stable detail pages for every ship with level 125 stats, English and Vietnamese skill descriptions, community notes, and recommended REGAL equipment sets for each available scenario
 - Static, dependency-free site that works directly on GitHub Pages
 
+The tier list is the homepage. The searchable directory is available at `/wiki/`, with individual ship records linked from there.
+
 The site is generated from community-maintained Azur Lane data and is intended for reference only. It is unofficial and is not affiliated with Manjuu, Yongshi, or Yostar.
 
 ## Sources

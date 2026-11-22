@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Searchable Azur Lane ship wiki with level 125 stats, skills, and recommended equipment.">
+  <base href="../">
+  <title>Ship Wiki · Azur Lane Community Guide</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="Azur Lane Community Guide home">
+      <span class="brand-mark" aria-hidden="true">AL</span>
+      <span>
+        <strong>Azur Lane</strong>
+        <small>Community Guide</small>
+      </span>
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="./" data-nav="tier-list">Tier List</a>
+      <a href="wiki/" data-nav="wiki">Wiki</a>
+    </nav>
+  </header>
+
+  <main class="site-main" id="app">
+    <section class="view" id="tier-view" aria-labelledby="tier-title">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">Endgame PvE</p>
+          <h1 id="tier-title">Community Tier List</h1>
+          <p>Current REGAL ratings translated into an ECTL-style tier scale. Change the content mode because ship performance is encounter-specific.</p>
+        </div>
+        <p class="data-date" id="tier-data-date"></p>
+      </div>
+
+      <div class="control-bar" aria-label="Tier list filters">
+        <label>
+          <span>Content</span>
+          <select id="tier-mode-select">
+            <option value="General PvE">General PvE</option>
+            <option value="META">META Showdown</option>
+            <option value="Hard Arbiter">Hard Arbiter</option>
+            <option value="CM">Challenge Mode</option>
+            <option value="W14 Mob">World 14 mob</option>
+            <option value="W14 Boss">World 14 boss</option>
+            <option value="W15/16 Mob">World 15/16 mob</option>
+            <option value="W15/16 Boss">World 15/16 boss</option>
+            <option value="EX">EX</option>
+            <option value="Campaign">Campaign</option>
+          </select>
+        </label>
+        <label>
+          <span>Hull group</span>
+          <select id="tier-hull-select">
+            <option value="BB">BB / BC / BBV / BM / IXm</option>
+            <option value="CV">CV / CVL</option>
+            <option value="CA">CA / CB</option>
+            <option value="CL">CL / IXv</option>
+            <option value="DD">DD / DDG</option>
+            <option value="SS">SS / SSV / IXs</option>
+            <option value="Other">Other</option>
+            <option value="All">All hulls</option>
+          </select>
+        </label>
+      </div>
+
+      <article class="selected-ship" id="tier-selected" aria-live="polite">
+        <img id="tier-selected-avatar" alt="">
+        <div class="selected-body">
+          <div class="selected-title-row">
+            <h2 id="tier-selected-name">Azuchi</h2>
+            <span class="tier-pill" id="tier-selected-rank">Tier EX</span>
+            <span class="status-pill" id="tier-selected-new" hidden>Latest addition</span>
+          </div>
+          <p class="ship-meta" id="tier-selected-meta"></p>
+          <p class="stat-line" id="tier-selected-stats"></p>
+          <p id="tier-selected-description"></p>
+          <div class="selected-actions">
+            <a class="button primary" id="tier-selected-wiki" href="wiki/#/755-azuchi">Open full Wiki page</a>
+          </div>
+        </div>
+      </article>
+
+      <div class="tier-board" id="tier-board" aria-label="Ship tier board"></div>
+      <p class="legend">REGAL rating → ECTL tier: SS→EX · S→0 · A→1 · B→2 · C→3 · D→4 · F→5 · unrated→N. An asterisk marks a situational rating.</p>
+    </section>
+
+    <section class="view" id="wiki-view" aria-labelledby="wiki-title" hidden>
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">Ship database</p>
+          <h1 id="wiki-title">Wiki</h1>
+          <p>Search every ship and filter the roster by class, faction, hull type, or rarity.</p>
+        </div>
+        <p class="data-date" id="wiki-data-date"></p>
+      </div>
+
+      <div class="wiki-filters" aria-label="Wiki filters">
+        <label class="search-field">
+          <span>Ship name</span>
+          <input id="wiki-search" type="search" autocomplete="off" placeholder="Search by name or alias">
+        </label>
+        <label>
+          <span>Class</span>
+          <select id="wiki-class"><option value="">All classes</option></select>
+        </label>
+        <label>
+          <span>Faction</span>
+          <select id="wiki-faction"><option value="">All factions</option></select>
+        </label>
+        <label>
+          <span>Hull type</span>
+          <select id="wiki-hull"><option value="">All hull types</option></select>
+        </label>
+        <label>
+          <span>Rarity</span>
+          <select id="wiki-rarity"><option value="">All rarities</option></select>
+        </label>
+      </div>
+
+      <div class="results-bar">
+        <p id="wiki-results-count" aria-live="polite"></p>
+        <button class="button ghost" id="wiki-clear" type="button">Clear filters</button>
+      </div>
+      <div class="ship-directory" id="wiki-grid"></div>
+      <nav class="pagination" id="wiki-pagination" aria-label="Wiki result pages"></nav>
+    </section>
+
+    <article class="view detail-view" id="detail-view" hidden>
+      <a class="back-link" href="wiki/">Back to Wiki</a>
+      <header class="detail-hero">
+        <img id="detail-avatar" alt="">
+        <div>
+          <div class="detail-title-row">
+            <p class="eyebrow" id="detail-faction"></p>
+            <span class="status-pill" id="detail-new" hidden>Latest addition</span>
+          </div>
+          <h1 id="detail-name"></h1>
+          <p class="ship-meta" id="detail-meta"></p>
+          <p id="detail-description"></p>
+        </div>
+      </header>
+
+      <section class="detail-section" aria-labelledby="detail-ratings-title">
+        <div class="section-heading">
+          <h2 id="detail-ratings-title">Community ratings</h2>
+          <p>REGAL endgame PvE ratings by content.</p>
+        </div>
+        <div class="rating-grid" id="detail-ratings"></div>
+      </section>
+
+      <section class="detail-section" aria-labelledby="detail-stats-title">
+        <div class="section-heading">
+          <h2 id="detail-stats-title">Level 125 stats</h2>
+          <p>Retrofit-first where available, calculated at 106% affinity.</p>
+        </div>
+        <div class="stats-grid" id="detail-stats"></div>
+      </section>
+
+      <section class="detail-section" aria-labelledby="detail-skills-title">
+        <div class="section-heading">
+          <h2 id="detail-skills-title">Skills</h2>
+          <p>Maximum-level English and Vietnamese descriptions from the current local dataset.</p>
+        </div>
+        <div class="skills-list" id="detail-skills"></div>
+      </section>
+
+      <section class="detail-section" aria-labelledby="detail-equipment-title">
+        <div class="section-heading">
+          <h2 id="detail-equipment-title">Recommended equipment</h2>
+          <p>REGAL first-choice loadouts for every available scenario. Conditional notes are preserved.</p>
+        </div>
+        <div class="scenario-list" id="detail-equipment"></div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <p>Unofficial community reference. Ratings and equipment recommendations: <a href="https://azur-lane-regal.suchiguma.com/" target="_blank" rel="noreferrer">REGAL</a>. Ship information: <a href="https://azurlane.koumakan.jp/" target="_blank" rel="noreferrer">Azur Lane Wiki</a>.</p>
+  </footer>
+
+  <script src="assets/ship-data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

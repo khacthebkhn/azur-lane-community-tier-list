@@ -70,7 +70,7 @@
   }
 
   function shipHref(ship) {
-    return `#/wiki/${ship.id}-${slugify(ship.name)}`;
+    return `wiki/#/${ship.id}-${slugify(ship.name)}`;
   }
 
   function avatarUrl(ship) {
@@ -452,10 +452,21 @@
   }
 
   function route() {
-    const path = location.hash.replace(/^#\/?/, "");
-    const [section, detail] = path.split("/");
-    if (section === "wiki" && detail) {
-      const shipId = Number.parseInt(detail, 10);
+    const hashPath = location.hash.replace(/^#\/?/, "");
+    const isWikiPath = /\/wiki\/(?:index\.html)?$/.test(location.pathname);
+
+    if (!isWikiPath && hashPath.startsWith("wiki")) {
+      const legacyDetail = hashPath.split("/")[1];
+      location.replace(`wiki/${legacyDetail ? `#/${legacyDetail}` : ""}`);
+      return;
+    }
+
+    if (!isWikiPath && hashPath === "tier-list") {
+      history.replaceState(null, "", `${location.pathname}${location.search}`);
+    }
+
+    if (isWikiPath && hashPath) {
+      const shipId = Number.parseInt(hashPath, 10);
       const ship = shipById.get(shipId);
       if (ship) {
         setView("detail");
@@ -464,7 +475,7 @@
         return;
       }
     }
-    if (section === "wiki") {
+    if (isWikiPath) {
       setView("wiki");
       renderWiki();
       document.title = "Ship Wiki · Azur Lane Community Guide";
@@ -481,6 +492,5 @@
   $("#tier-data-date").textContent = generatedLabel;
   $("#wiki-data-date").textContent = `${generatedLabel} · ${ships.length.toLocaleString()} ships`;
   window.addEventListener("hashchange", route);
-  if (!location.hash) location.hash = "#/tier-list";
-  else route();
+  route();
 })();
