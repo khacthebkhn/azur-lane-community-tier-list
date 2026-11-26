@@ -74,7 +74,7 @@
   }
 
   function avatarUrl(ship) {
-    return `https://cdn.jsdelivr.net/gh/iujab/azurlane-images@main/thumbnails/${encodeURIComponent(ship.icon)}.png`;
+    return ship.portraitUrl || `https://cdn.jsdelivr.net/gh/iujab/azurlane-images@main/thumbnails/${encodeURIComponent(ship.icon)}.png`;
   }
 
   function assignShipImage(image, ship, descriptive = false) {
@@ -146,7 +146,11 @@
   const tierState = {
     mode: "General PvE",
     hull: "BB",
-    selected: shipById.has(755) ? 755 : ships[0].id
+    selected: ships
+      .filter(ship => ship.isNew && inHullGroup(ship, "BB"))
+      .sort((a, b) => ratingOrder.indexOf(normalizeRating(getRating(b, "General PvE")))
+        - ratingOrder.indexOf(normalizeRating(getRating(a, "General PvE"))))[0]?.id
+      ?? (shipById.has(755) ? 755 : ships[0].id)
   };
 
   const tierModeSelect = $("#tier-mode-select");
